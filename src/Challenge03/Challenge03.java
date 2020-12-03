@@ -27,18 +27,21 @@ public class Challenge03 {
             Scanner reader = new Scanner(file);
             int height = 0;
             int width = 0;
+            Slope slope = new Slope();
             while (reader.hasNextLine()) {
                 String l = reader.nextLine();
                 width = l.length();
                 char[] arr = l.toCharArray();
                 for (int i = 0; i < width; i++) {
                     if(arr[i] == '#'){
-                        set.add(i + "," + height);
+                        slope.addTree(i,height);
                     }
                 }
                 height++;
             }
-            return new Slope(width,height,set);
+            slope.setHeight(height);
+            slope.setWidth(width);
+            return slope;
         }catch (FileNotFoundException e) {
             e.printStackTrace();
             System.exit(1);

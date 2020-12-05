@@ -1,7 +1,5 @@
 package Challenge04;
 
-import Challenge03.Slope;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;

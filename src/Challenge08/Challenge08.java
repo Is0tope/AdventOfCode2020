@@ -1,10 +1,11 @@
 package Challenge08;
 
+import Interpreter.Interpreter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 
 public class Challenge08 {
@@ -68,7 +69,8 @@ public class Challenge08 {
             while(!seen.contains(interpreter.getPointer())){
                 seen.add(interpreter.getPointer());
                 // If returns false, it terminated correctly
-                if(!interpreter.tick()){
+                interpreter.tick();
+                if(interpreter.isTerminated()){
                     return interpreter.getAcc();
                 }
             }

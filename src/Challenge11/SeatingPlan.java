@@ -1,5 +1,7 @@
 package Challenge11;
 
+import Util.Point;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

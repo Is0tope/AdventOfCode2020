@@ -1,5 +1,7 @@
 package Challenge11;
 
+import Util.Point;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;

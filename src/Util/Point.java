@@ -1,4 +1,4 @@
-package Challenge11;
+package Util;
 
 import java.util.Objects;
 
@@ -17,6 +17,21 @@ public class Point {
 
     public int getY() {
         return y;
+    }
+
+    public static Point multiply(Point p,int scalar){
+        return new Point(p.getX()*scalar,p.getY()*scalar);
+    }
+
+    public static Point add(Point p, Point p2){
+        return new Point(p.getX()+p2.getX(),p.getY()+p2.getY());
+    }
+
+    public static Point rotate(Point p,int angle){
+        // Use matrix rotation around y axis, integer math requires janky rounding. Could use angle -> trig mappings i guess.
+        double c = Math.cos(Math.toRadians(angle));
+        double s = Math.sin(Math.toRadians(angle));
+        return new Point((int)Math.round(p.getX()*c + p.getY()*s),(int)Math.round(p.getY()*c - p.getX()*s));
     }
 
     @Override

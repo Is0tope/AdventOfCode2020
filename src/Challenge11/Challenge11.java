@@ -4,7 +4,8 @@ import Util.Point;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Challenge11 {
 

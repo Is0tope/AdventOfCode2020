@@ -2,7 +2,9 @@ package Challenge05;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Scanner;
 
 public class Challenge05 {
 

@@ -1,13 +1,10 @@
 package Challenge12;
 
-import Challenge11.SeatingPlan;
 import Util.Point;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class Challenge12 {

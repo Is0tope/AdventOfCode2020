@@ -1,7 +1,5 @@
 package Challenge01;
 
-import java.io.File;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Challenge01Test {

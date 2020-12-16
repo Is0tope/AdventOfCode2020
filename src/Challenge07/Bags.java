@@ -1,6 +1,8 @@
 package Challenge07;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Bags {
     private HashMap<String,Long> bags;

@@ -1,12 +1,7 @@
 package Challenge13;
 
-import Challenge12.Ship;
-import Challenge12.WaypointShip;
-import Util.Point;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;

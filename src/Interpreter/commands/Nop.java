@@ -1,6 +1,5 @@
 package Interpreter.commands;
 
-import Interpreter.Interpreter;
 import Interpreter.State;
 
 public class Nop implements ICommand {

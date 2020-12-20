@@ -12,27 +12,13 @@ public class Tile {
     private HashMap<Point,Boolean> grid;
     private HashSet<Edge> edges;
 
-    private Tile left;
-    private Tile right;
-    private Tile up;
-    private Tile down;
-
-    public boolean hasEmptyEdge(){
-        return right == null || left == null || up == null || down == null;
-    }
-
     public Tile(long id, int size, HashMap<Point, Boolean> grid) {
         this.id = id;
         this.size = size;
         this.grid = grid;
 
-        this.up = null;
-        this.down = null;
-        this.right = null;
-        this.left = null;
-
         this.edges = new HashSet<Edge>();
-        for(int i = 0;i < 3;i++){
+        for(int i = 0;i < 4;i++){
             edges.add(getBottomEdge());
             edges.add(getTopEdge());
             edges.add(getLeftEdge());
@@ -118,166 +104,142 @@ public class Tile {
     }
 
     public boolean tryAttachRight(Tile t){
-        if(left == null){
-            Edge current = getRightEdge();
-            for(int i = 0;i < 3;i++){
-                if(current.equals(t.getLeftEdge())){
-                    attachRight(t);
-                    return true;
-                }
-                t.flip();
-                if(current.equals(t.getLeftEdge())){
-                    attachRight(t);
-                    return true;
-                }
-                t.flip();
-                t.rotate90();
+        Edge current = getRightEdge();
+        for(int i = 0;i < 4;i++){
+            if(current.equals(t.getLeftEdge())){
+                return true;
             }
+            t.flip();
+            if(current.equals(t.getLeftEdge())){
+                return true;
+            }
+            t.flip();
+            t.rotate90();
         }
         return false;
-    }
-
-    private void attachRight(Tile t){
-        this.right = t;
-        t.setLeft(this);
     }
 
     public boolean tryAttachLeft(Tile t){
-        if(left == null){
-            Edge current = getLeftEdge();
-            for(int i = 0;i < 3;i++){
-                if(current.equals(t.getRightEdge())){
-                    attachLeft(t);
-                    return true;
-                }
-                t.flip();
-                if(current.equals(t.getRightEdge())){
-                    attachLeft(t);
-                    return true;
-                }
-                t.flip();
-                t.rotate90();
+        Edge current = getLeftEdge();
+        for(int i = 0;i < 4;i++){
+            if(current.equals(t.getRightEdge())){
+                return true;
             }
+            t.flip();
+            if(current.equals(t.getRightEdge())){
+                return true;
+            }
+            t.flip();
+            t.rotate90();
         }
         return false;
-    }
-
-    private void attachLeft(Tile t){
-        this.left = t;
-        t.setRight(this);
     }
 
     public boolean tryAttachBottom(Tile t){
-        if(down == null){
-            Edge current = getBottomEdge();
-            for(int i = 0;i < 3;i++){
-                if(current.equals(t.getTopEdge())){
-                    attachBottom(t);
-                    return true;
-                }
-                t.flip();
-                if(current.equals(t.getTopEdge())){
-                    attachBottom(t);
-                    return true;
-                }
-                t.flip();
-                t.rotate90();
+        Edge current = getBottomEdge();
+        for(int i = 0;i < 4;i++){
+            if(current.equals(t.getTopEdge())){
+                return true;
             }
+            t.flip();
+            if(current.equals(t.getTopEdge())){
+                return true;
+            }
+            t.flip();
+            t.rotate90();
         }
         return false;
     }
-
-    private void attachBottom(Tile t){
-        this.down = t;
-        t.setUp(this);
-    }
-
 
     public boolean tryAttachTop(Tile t){
-        if(up == null){
-            Edge current = getTopEdge();
-            for(int i = 0;i < 3;i++){
-                if(current.equals(t.getBottomEdge())){
-                    attachTop(t);
-                    return true;
-                }
-                t.flip();
-                if(current.equals(t.getBottomEdge())){
-                    attachTop(t);
-                    return true;
-                }
-                t.flip();
-                t.rotate90();
+        Edge current = getTopEdge();
+        for(int i = 0;i < 4;i++){
+            if(current.equals(t.getBottomEdge())){
+                return true;
             }
+            t.flip();
+            if(current.equals(t.getBottomEdge())){
+                return true;
+            }
+            t.flip();
+            t.rotate90();
         }
         return false;
-    }
-
-    private void attachTop(Tile t){
-        this.up = t;
-        t.setDown(this);
-    }
-
-
-    public void setLeft(Tile left) {
-        this.left = left;
-    }
-
-    public void setRight(Tile right) {
-        this.right = right;
-    }
-
-    public void setUp(Tile up) {
-        this.up = up;
-    }
-
-    public void setDown(Tile down) {
-        this.down = down;
-    }
-
-    public Tile getLeft() {
-        return left;
-    }
-
-    public Tile getRight() {
-        return right;
-    }
-
-    public Tile getUp() {
-        return up;
-    }
-
-    public Tile getDown() {
-        return down;
     }
 
     public long getId() {
         return id;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public HashMap<Point,Boolean> getGridWithRemovedBorder(){
+        HashMap<Point,Boolean> map = new HashMap<>();
+        for(Point p : grid.keySet()){
+            boolean val = grid.get(p);
+            if(p.getX() != 0 && p.getX() != size - 1 && p.getY() != 0 && p.getY() != size - 1){
+                map.put(new Point(p.getX()-1,p.getY()-1),val);
+            }
+        }
+        return map;
+    }
+
+    public long countSetExcept(HashSet<Point> s1,HashSet<Point> s2){
+        HashSet<Point> s3 = new HashSet<>(s1);
+        s3.removeAll(s2);
+        return s3.size();
+    }
+
+    public long findPatternAndCountWaves(HashSet<Point> pattern){
+        for(int i = 0;i < 4;i++){
+            HashSet<Point> matches = searchPattern(grid,pattern);
+            if(matches.size() > 0){
+                return countSetExcept(new HashSet<>(grid.keySet()),matches);
+            }
+            flip();
+            matches = searchPattern(grid,pattern);
+            if(matches.size() > 0){
+                return countSetExcept(new HashSet<>(grid.keySet()),matches);
+            }
+            flip();
+            rotate90();
+        }
+        return 0;
+    }
+
+    public HashSet<Point> searchPattern(HashMap<Point,Boolean> map, HashSet<Point> pattern){
+        HashSet<Point> allmatches = new HashSet<Point>();
+        int cnt = 0;
+        // Overscan the pattern but who cares
+        for(int y = 0;y < size;y++) {
+            for (int x = 0; x < size; x++) {
+                boolean found = true;
+                HashSet<Point> matches = new HashSet<Point>();
+                for(Point p : pattern){
+                    Point np = new Point(p.getX()+x,p.getY()+y);
+                    if(map.getOrDefault(np,false)){
+                        matches.add(np);
+                    }else{
+                        found = false;
+                        break;
+                    }
+                }
+                if(found){
+                    allmatches.addAll(matches);
+                    cnt++;
+                }
+            }
+        }
+        return allmatches;
+    }
+
     @Override
     public String toString() {
-        long l=0;
-        long r=0;
-        long u=0;
-        long d=0;
-        if(left != null){
-            l = left.getId();
-        }
-        if(right != null){
-            r = right.getId();
-        }
-        if(up != null){
-            u = up.getId();
-        }if(down != null){
-            d = down.getId();
-        }
         return "Tile{" +
                 "id=" + id +
-                ", left=" + l +
-                ", right=" + r +
-                ", up=" + u +
-                ", down=" + d +
+                ", size=" + size +
                 '}';
     }
 }

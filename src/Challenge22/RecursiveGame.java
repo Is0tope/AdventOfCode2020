@@ -8,8 +8,6 @@ import java.util.Objects;
 public class RecursiveGame {
     private LinkedList<Long> d1;
     private LinkedList<Long> d2;
-    // Initial state when this game started (for memoizing)
-    private RecursiveGame initialState;
     private HashSet<RecursiveGame> previous;
 
     // Memoizer
@@ -27,16 +25,7 @@ public class RecursiveGame {
         // Always clone here
         this.d1 = new LinkedList<>(deck1);
         this.d2 = new LinkedList<>(deck2);
-        this.initialState = new RecursiveGame(deck1,deck2,false);   // Hacky, but need it to stop recursing in constructor
         this.previous = new HashSet<>();
-    }
-
-    public RecursiveGame(LinkedList<Long> deck1, LinkedList<Long> deck2, boolean flag) {
-        // Always clone here
-        this.d1 = new LinkedList<>(deck1);
-        this.d2 = new LinkedList<>(deck2);
-        this.initialState = null;
-        this.previous = null;
     }
 
     public long getPlayerScore(long player){
@@ -51,6 +40,7 @@ public class RecursiveGame {
 
     // Returns winner number
     public long play(long depth){
+        RecursiveGame initialState = new RecursiveGame(d1,d2);
         // Skip if we have seen this state before in general
         if(memoizer.containsKey(this)){
             return memoizer.get(this);
